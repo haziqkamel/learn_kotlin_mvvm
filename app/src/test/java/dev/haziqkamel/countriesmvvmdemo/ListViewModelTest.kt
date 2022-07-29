@@ -66,6 +66,21 @@ class ListViewModelTest {
         Assert.assertEquals(false, listViewModel.loading.value)
     }
 
+    // 16. Setup Unit Test for Fail Path
+    @Test
+    fun getCountriesFail() {
+
+        testSingle = Single.error(Throwable())
+
+        Mockito.`when`(countriesService.getCountries()).thenReturn(testSingle)
+
+        listViewModel.refresh()
+
+        Assert.assertEquals(null, listViewModel.countries.value?.size)
+        Assert.assertEquals(true, listViewModel.countryLoadError.value)
+        Assert.assertEquals(false, listViewModel.loading.value)
+    }
+
     // 2. Function Before to setup the AndroidSchedulers main thread for test
     @Before
     fun setupRxSchedulers() {
